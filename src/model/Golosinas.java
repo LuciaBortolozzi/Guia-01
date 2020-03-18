@@ -1,4 +1,8 @@
 package model;
 
-public class Golosinas {
+public abstract class Golosinas implements ICalculable {
+    int codigo;
+    String descripcion;
+    String[] sabores;
+    double precioUnitario;
 }
