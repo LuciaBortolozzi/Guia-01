@@ -1,6 +1,6 @@
 package model;
 
-public class Depositos {
+public final class Depositos {
     private String nombre;
     private String domicilio;
     private boolean propio;
