@@ -12,17 +12,15 @@ public abstract class Facturas implements ICalculable{
     protected long numFactura;
     protected Clientes cliente;
     protected ItemsDeFactura[] itemsDeFactura = new ItemsDeFactura[ITEMS];
-    protected static String nombreTienda; //final
+    protected static final String nombreTienda = "TODO DULCE";
     protected Pagos pago;
 
-    public Facturas(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente, String nombreTienda) {
+    public Facturas(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente) {
         this.fechaEmision = fechaEmision;
         this.fechaVencimiento = fechaVencimiento;
         this.centroEmisor = centroEmisor;
         this.numFactura = numFactura;
         this.cliente = cliente;
-        this.nombreTienda = nombreTienda;
-
         this.pago = new Pagos();
 
         for(int i = 0; i < ITEMS; i++){
@@ -91,9 +89,6 @@ public abstract class Facturas implements ICalculable{
         return nombreTienda;
     }
 
-    public void setNombreTienda(String nombreTienda) {
-        this.nombreTienda = nombreTienda;
-    }
 
     public Pagos getPago() {
         return pago;

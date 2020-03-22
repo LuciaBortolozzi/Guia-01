@@ -1,7 +1,7 @@
 package model;
 
 public abstract class Golosinas implements ICalculable {
-    static final int S = 4;
+    static final int S = 2;
 
     protected int codigo;
     protected String descripcion;
