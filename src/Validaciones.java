@@ -1,4 +1,3 @@
-package view;
 import java.util.*;
 
 public class Validaciones {
@@ -14,10 +13,22 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                System.out.println("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
+        } while ( x <= 0 );
+        return x;
+    }
+
+    public static long validarLong(){
+        long x;
+        do {
+            while (!scan.hasNextLong()){
+                System.out.println("Incorrecto, ingresar nuevamente: ");
+                scan.nextLine();
+            }
+            x = scan.nextLong();
         } while ( x <= 0 );
         return x;
     }
@@ -26,7 +37,7 @@ public class Validaciones {
         double x;
         do {
             while (!scan.hasNextDouble()){
-                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                System.out.println("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextDouble();
@@ -42,7 +53,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                System.out.println("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -54,7 +65,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                System.out.println("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -66,7 +77,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                System.out.println("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();

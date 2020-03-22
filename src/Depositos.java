@@ -1,5 +1,3 @@
-package model;
-
 public final class Depositos {
     private String nombre;
     private String domicilio;

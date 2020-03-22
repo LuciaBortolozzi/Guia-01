@@ -1,5 +1,3 @@
-package model;
-
 public class ItemsDeFactura implements ICalculable{
     private Golosinas golosina;
     private int cantidad;

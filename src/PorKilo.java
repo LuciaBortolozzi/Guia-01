@@ -1,5 +1,3 @@
-package model;
-
 public class PorKilo extends Golosinas{
     private boolean oferta;
 
