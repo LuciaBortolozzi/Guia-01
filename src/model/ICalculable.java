@@ -1,3 +1,5 @@
+package model;
+
 public interface ICalculable {
     //atributos public static final
     double DESCUENTO = 0.20;

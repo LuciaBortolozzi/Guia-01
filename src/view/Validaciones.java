@@ -1,3 +1,4 @@
+package view;
 import java.util.*;
 
 public class Validaciones {
@@ -13,7 +14,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -25,7 +26,7 @@ public class Validaciones {
         long x;
         do {
             while (!scan.hasNextLong()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextLong();
@@ -37,7 +38,7 @@ public class Validaciones {
         double x;
         do {
             while (!scan.hasNextDouble()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextDouble();
@@ -53,7 +54,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -65,7 +66,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -77,7 +78,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()){
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();

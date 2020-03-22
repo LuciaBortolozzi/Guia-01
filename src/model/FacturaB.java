@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Calendar;
 
 public class FacturaB extends Facturas {

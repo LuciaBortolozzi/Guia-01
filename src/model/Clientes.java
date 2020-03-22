@@ -1,3 +1,5 @@
+package model;
+
 public class Clientes {
     private long cuit;
     private String razonSocial;

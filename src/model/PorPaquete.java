@@ -1,3 +1,5 @@
+package model;
+
 public class PorPaquete extends Golosinas{
     private boolean promocion;
     private Depositos deposito;
