@@ -1,6 +1,11 @@
 package view;
 
+import controller.Controlador;
+
 public class Menu {
+
+    Controlador controlador = new Controlador();
+
     public void menu(String args) throws Exception{
 
         do {
@@ -46,8 +51,10 @@ public class Menu {
 
             switch (opcion){
                 case 0:
+                    controlador.ingresarFacturas();
                     break;
                 case 1:
+                    controlador.ingresarClientes();
                     break;
                 case 2:
                     break;

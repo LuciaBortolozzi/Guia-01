@@ -103,6 +103,18 @@ public class Validaciones {
         }
     }
 
+    public static int tipo(){
+        int x;
+        do {
+            while (!scan.hasNextInt()) {
+                System.out.println("Incorrecto, ingresar nuevamente: ");
+                scan.nextLine();
+            }
+            x = scan.nextInt();
+        } while (x != 1 && x != 2);
+        return x;
+    }
+
     public static int limite(int a, int b){
         int x;
         do {
