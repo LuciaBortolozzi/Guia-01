@@ -90,7 +90,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()) {
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -107,7 +107,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()) {
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -119,7 +119,7 @@ public class Validaciones {
         int x;
         do {
             while (!scan.hasNextInt()) {
-                System.out.println("Incorrecto, ingresar nuevamente: ");
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
                 scan.nextLine();
             }
             x = scan.nextInt();
@@ -128,7 +128,7 @@ public class Validaciones {
     }
 
     public static String ingresar(String ingreso) {
-        System.out.println("Ingresar: " + ingreso);
+        Mostrar.mostrar("Ingresar " + ingreso);
         String texto = "";
         while (texto.equals("")) {
             texto = scan.nextLine();
@@ -137,7 +137,7 @@ public class Validaciones {
     }
 
     public static String ingresar(String ingreso, boolean toUpper) {
-        System.out.println("Ingresar: " + ingreso);
+        Mostrar.mostrar("Ingresar " + ingreso);
         String texto = "";
         while (texto.equals("")) {
             texto = scan.nextLine();

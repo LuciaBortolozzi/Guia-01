@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public abstract class Facturas implements ICalculable{
 
-    public static final int ITEMS = 2;
+    protected static final int ITEMS = 2;
 
     protected Calendar fechaEmision;
     protected Calendar fechaVencimiento;
