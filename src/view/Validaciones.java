@@ -47,7 +47,15 @@ public class Validaciones {
     }
 
     public static boolean validarBoolean() {
-        return scan.nextBoolean();
+        int x;
+        do {
+            while (!scan.hasNextInt()) {
+                Mostrar.mostrar("Incorrecto, ingresar nuevamente: ");
+                scan.nextLine();
+            }
+            x = scan.nextInt();
+        } while (x != 0 && x != 1);
+        return x == 1;
     }
 
     public static int validarAnio() {
@@ -95,12 +103,7 @@ public class Validaciones {
             }
             x = scan.nextInt();
         } while (x != 1 && x != 2);
-
-        if (x == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return x == 1;
     }
 
     public static int tipo(){

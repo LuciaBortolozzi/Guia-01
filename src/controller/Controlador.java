@@ -6,10 +6,14 @@ import view.Mostrar;
 import java.util.Calendar;
 
 public class Controlador {
-    static final int F = 2;
-    static final int G = 2;
-    static final int C = 3;
-    static final int D = 5;
+    private static final int F = 2;
+    private static final int G = 2;
+    private static final int C = 3;
+    private static final int D = 5;
+    private static final int I = 2;
+    private static final char TARJETA_DEBITO = 'D';
+    private static final char TARJETA_CREDITO = 'C';
+    private static final char TRANSFERENCIA = 'T';
 
     public Controlador(){
 
@@ -18,14 +22,99 @@ public class Controlador {
     public void ingresarFacturas(){
         Facturas[] facturas = new Facturas[F];
 
-        Calendar actual = Calendar.getInstance();
-        int diaActual = actual.get(Calendar.DAY_OF_MONTH);
-        int mesActual = actual.get((Calendar.MONTH) + 1);
-        int anioAcual = actual.get(Calendar.YEAR);
+        Mostrar.mostrar("Ingreso de facturas");
+        for(int i = 0; i < F; i++) {
+            Mostrar.mostrar("Factura: " + (i + 1));
+            facturas[i].setNumFactura(i);
 
+            Calendar actual = Calendar.getInstance();
+            int diaActual = actual.get(Calendar.DAY_OF_MONTH);
+            int mesActual = actual.get((Calendar.MONTH) + 1);
+            int anioAcual = actual.get(Calendar.YEAR);
+
+            facturas[i].setFechaEmision(actual);
+
+            Calendar venc = Calendar.getInstance();
+            venc.add(Calendar.DATE,30);
+            int diaVenc = venc.get(Calendar.DAY_OF_MONTH);
+            int mesVenc = venc.get((Calendar.MONTH) + 1);
+            int anioVenc = venc.get(Calendar.YEAR);
+
+            facturas[i].setFechaVencimiento(venc);
+
+            Mostrar.mostrar("Ingresar centro emisor: ");
+            facturas[i].setCentroEmisor(Validaciones.validarInt());
+
+            Mostrar.mostrar("Clientes: ");
+            Clientes[] clientes = ingresarClientes();
+            Mostrar.mostrar("\t\t\t\t\t\t\t\tCliente\t\tCUIT\t\tRazon Social\t\tResponsable Inscripto");
+            for (int j = 0; j < clientes.length; j++) {
+                Mostrar.mostrar("Cliente"+ j +": "
+                        + clientes[j].getCuit() + "\t\t"
+                        + clientes[j].getRazonSocial() + "\t\t"
+                        + (clientes[j].isCondicionIVA() ?  "si" : "no") );
+            }
+
+            Mostrar.mostrar("Ingresar numero de cliente de la factura: ");
+            int pos = Validaciones.limite(0, clientes.length);
+
+            facturas[i].setCliente(clientes[pos]);
+
+//            if (facturas[i].getCliente().isCondicionIVA()){}
+
+            Mostrar.mostrar("Ingresar items de la factura: ");
+
+            for (int j = 0; j < I; j++){
+                Mostrar.mostrar("Item: " + ( j + 1));
+
+                Golosinas[] golosinas = ingresarGolosinas();
+                Mostrar.mostrar("\t\t\t\t\t\t\t\tGolosina\t\tCodigo\t\tDescripcion\t\tPrecio Unitario");
+                for (int k = 0; k < golosinas.length; k++) {
+                    Mostrar.mostrar("Golosina"+ k +": "
+                            + golosinas[k].getCodigo() + "\t\t"
+                            + golosinas[k].getDescripcion() + "\t\t"
+                            + golosinas[k].getPrecioUnitario());
+                }
+
+                Mostrar.mostrar("Ingresar numero de golosina del item: ");
+                pos = Validaciones.limite(0, golosinas.length);
+
+                Mostrar.mostrar("Ingresar cantidad de golosina: ");
+                int cant = Validaciones.validarInt();
+
+                facturas[i].setItemsDeFactura( j, golosinas[pos], cant);
+            }
+
+            Mostrar.mostrar("¿Desea ingresar pago de la factura? (1) si o (0) no: ");
+            if (Validaciones.validarBoolean()){
+                Mostrar.mostrar("Numero de Recibo: " + ( i + 1));
+                Mostrar.mostrar("Numero de Transaccion: " + ( i + 1));
+
+                Mostrar.mostrar("Ingresar forma de pago: ");
+                Mostrar.mostrar("1. Tarjeta de debito\n" +
+                                        "2. Tarjeta de credito\n" +
+                                        "3. Trasferencia bancaria\n");
+                int decision = Validaciones.limite(1,3);
+                char formaDePago;
+                switch (decision){
+                    case 1:
+                        formaDePago = TARJETA_DEBITO;
+                        break;
+                    case 2:
+                        formaDePago = TARJETA_CREDITO;
+                        break;
+                    default:
+                        formaDePago = TRANSFERENCIA;
+                        break;
+                }
+
+                facturas[i].setPago(actual,formaDePago,i,i);
+            }
+        }
+    }
+    public void mostrarFacturas() {
 
     }
-
 
     public static Clientes[] ingresarClientes(){
         Clientes[] clientes = new Clientes[C];
@@ -79,13 +168,30 @@ public class Controlador {
             golosinas[i].setPrecioUnitario(Validaciones.validarDouble());
 
             if (golosinas[i] instanceof PorPaquete){
-                Mostrar.mostrar("Ingresar true si hay 2x1 o false en caso contrario: ");
+                Mostrar.mostrar("Ingresar (1) si hay 2x1 o (0) en caso contrario: ");
                 ((PorPaquete) golosinas[i]).setPromocion(Validaciones.validarBoolean());
 
-                Mostrar.mostrar("Ingresar deposito: ");
-                ((PorPaquete) golosinas[i]).setDeposito(ingresarDepositos());
+                Mostrar.mostrar("Depositos: ");
+                Depositos[] depositos = ingresarDepositos();
+                Mostrar.mostrar("\t\t\t\t\t\t\t\tDeposito\t\tNombre\t\tPropio");
+                for (int j = 0; j < depositos.length; j++) {
+                    Mostrar.mostrar("Deposito"+ j +": "
+                            + depositos[j].getNombre() + "\t\t"
+                            + (depositos[j].isPropio() ?  "si" : "no") );
+                }
+
+                Mostrar.mostrar("Ingresar cant de depositos donde se encuentra la golosina: ");
+                cant = Validaciones.limite(0, depositos.length);
+                Depositos[] aux = new Depositos[cant];
+                for(int j = 0; j < cant; j++) {
+                    Mostrar.mostrar("Ingresar numero de deposito de la golosina: ");
+                    int pos = Validaciones.limite(0, depositos.length);
+                    aux[j] = depositos[pos];
+                }
+                ((PorPaquete) golosinas[i]).setDeposito(aux);
+
             } else {
-                Mostrar.mostrar("Ingresar true si esta en oferta o false en caso contrario: ");
+                Mostrar.mostrar("Ingresar (1) si esta en oferta o (0) en caso contrario: ");
                 ((PorKilo) golosinas[i]).setOferta(Validaciones.validarBoolean());
             }
         }
@@ -102,10 +208,11 @@ public class Controlador {
             depositos[i].setNombre(Validaciones.ingresar("nombre: "));
             depositos[i].setDomicilio(Validaciones.ingresar("domicilio: "));
 
-            Mostrar.mostrar("Ingresar true si es propio o false en caso contrario: ");
+            Mostrar.mostrar("Ingresar (1) si es propio o (0) en caso contrario: ");
             depositos[i].setPropio(Validaciones.validarBoolean());
         }
         return depositos;
     }
+
 
 }

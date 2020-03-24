@@ -6,7 +6,7 @@ public class Menu {
 
     Controlador controlador = new Controlador();
 
-    public void menu(String args) throws Exception{
+    public void menu(String args){
 
         do {
             Mostrar.mostrar("MENU");
@@ -52,9 +52,11 @@ public class Menu {
             switch (opcion){
                 case 0:
                     controlador.ingresarFacturas();
+                    controlador.mostrarFacturas();
                     break;
                 case 1:
                     controlador.ingresarClientes();
+                    controlador.ingresarGolosinas();
                     break;
                 case 2:
                     break;
