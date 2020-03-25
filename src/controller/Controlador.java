@@ -19,9 +19,9 @@ public class Controlador {
 
     }
 
-    public void ingresarFacturas(){
-        Facturas[] facturas = new Facturas[F];
+    Facturas[] facturas = new Facturas[F];
 
+    public void ingresarFacturas(){
         Mostrar.mostrar("Ingreso de facturas");
         for(int i = 0; i < F; i++) {
             Mostrar.mostrar("Factura: " + (i + 1));
@@ -86,17 +86,19 @@ public class Controlador {
             }
 
             Mostrar.mostrar("¿Desea ingresar pago de la factura? (1) si o (0) no: ");
+
             if (Validaciones.validarBoolean()){
                 Mostrar.mostrar("Numero de Recibo: " + ( i + 1));
-                Mostrar.mostrar("Numero de Transaccion: " + ( i + 1));
+                Mostrar.mostrar("Ingresar numero de transaccion: ");
+                int nTr = Validaciones.validarInt();
 
                 Mostrar.mostrar("Ingresar forma de pago: ");
                 Mostrar.mostrar("1. Tarjeta de debito\n" +
                                         "2. Tarjeta de credito\n" +
                                         "3. Trasferencia bancaria\n");
-                int decision = Validaciones.limite(1,3);
+                int eleccion = Validaciones.limite(1,3);
                 char formaDePago;
-                switch (decision){
+                switch (eleccion){
                     case 1:
                         formaDePago = TARJETA_DEBITO;
                         break;
@@ -108,7 +110,7 @@ public class Controlador {
                         break;
                 }
 
-                facturas[i].setPago(actual,formaDePago,i,i);
+                facturas[i].setPago(actual,formaDePago,i,nTr);
             }
         }
     }
