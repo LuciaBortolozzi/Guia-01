@@ -10,9 +10,4 @@ public class FacturaB extends Facturas {
 
     public FacturaB() {
     }
-
-    @Override
-    public double calcularTotal() {
-        return 0;
-    }
 }

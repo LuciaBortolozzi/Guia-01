@@ -100,4 +100,28 @@ public abstract class Facturas implements ICalculable{
         pago.setNumRecibo(numRecibo);
         pago.setNumTransaccion(numTransaccion);
     }
+
+    @Override
+    public double calcularTotal() {
+        double total = 0;
+        for (ItemsDeFactura item: itemsDeFactura
+        ) {
+            if (item.getGolosina() instanceof PorKilo){
+                if (((PorKilo) item.getGolosina()).isOferta()){
+                    total = item.getGolosina().getPrecioUnitario() - item.getGolosina().getPrecioUnitario() * DESCUENTO;
+                } else {
+                    total = item.getGolosina().getPrecioUnitario();
+                }
+            } else {
+                if (((PorPaquete) item.getGolosina()).isPromocion() && (item.getCantidad() % 2) == 0){
+                    total = item.getGolosina().getPrecioUnitario() / 2;
+                } else {
+                    total = item.getGolosina().getPrecioUnitario();
+                }
+            }
+            total = total * item.getCantidad();
+            total += total * IVA;
+        }
+        return total;
+    }
 }

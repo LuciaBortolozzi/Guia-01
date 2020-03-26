@@ -34,11 +34,4 @@ public class PorPaquete extends Golosinas{
         this.deposito = deposito;
     }
 
-    @Override
-    public double calcularTotal() {
-        if (isPromocion()){
-            return precioUnitario/2;
-        }
-        return precioUnitario;
-    }
 }

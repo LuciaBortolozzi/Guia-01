@@ -22,12 +22,4 @@ public class PorKilo extends Golosinas{
     public void setOferta(boolean oferta) {
         this.oferta = oferta;
     }
-
-    @Override
-    public double calcularTotal() {
-        if (oferta){
-            return precioUnitario - precioUnitario*DESCUENTO;
-        }
-        return precioUnitario;
-    }
 }

@@ -115,7 +115,29 @@ public class Controlador {
         }
     }
     public void mostrarFacturas() {
+        for (Facturas fact: facturas
+             ) {
+            Mostrar.mostrar("Nombre de Tienda");
+            Mostrar.mostrar(fact.getNombreTienda());
+            Mostrar.mostrar("\t\t\t\t\t\t\t\tFactura\t\tFecha de Emision\t\tFecha de Vencimiento\t\tCentro Emisor\t\tCliente\t\tItems de Factura\t\t");
 
+            Mostrar.mostrar("Factura"+ fact.getNumFactura() +": "
+                    + fact.getFechaEmision() + "\t\t"
+                    + fact.getFechaVencimiento() + "\t\t"
+                    + fact.getCentroEmisor() + "\t\t"
+                    + fact.getCliente() + "\t\t"
+                    + fact.getItemsDeFactura());
+
+        }
+
+//        fechaEmision;
+//        protected Calendar fechaVencimiento;
+//        protected static int centroEmisor;
+//        protected long numFactura;
+//        protected Clientes cliente;
+//        protected ItemsDeFactura[] itemsDeFactura = new ItemsDeFactura[ITEMS];
+//        protected static final String nombreTienda = "TO DO DULCE";
+//        protected Pagos pago;
     }
 
     public static Clientes[] ingresarClientes(){
@@ -130,7 +152,7 @@ public class Controlador {
 
             clientes[i].setRazonSocial(Validaciones.ingresar("razon social: "));
 
-            Mostrar.mostrar("Ingresar true si es responsable inscripto o false si no lo es: ");
+            Mostrar.mostrar("Ingresar (1) si es responsable inscripto o (0) en caso contrario: ");
             clientes[i].setCondicionIVA(Validaciones.validarBoolean());
         }
         return clientes;

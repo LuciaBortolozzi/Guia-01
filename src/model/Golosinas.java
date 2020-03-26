@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Golosinas implements ICalculable {
+public abstract class Golosinas {
     static final int S = 6;
 
     protected int codigo;

@@ -10,14 +10,4 @@ public class FacturaA extends Facturas {
 
     public FacturaA() {
     }
-
-    @Override
-    public double calcularTotal() {
-        double total = 0;
-        for (ItemsDeFactura item: itemsDeFactura
-             ) {
-            total = item.getGolosina().getPrecioUnitario() * IVA;
-        }
-        return total;
-    }
 }

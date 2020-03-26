@@ -1,6 +1,6 @@
 package model;
 
-public class ItemsDeFactura implements ICalculable{
+public class ItemsDeFactura {
     private Golosinas golosina;
     private int cantidad;
 
@@ -28,13 +28,4 @@ public class ItemsDeFactura implements ICalculable{
         this.cantidad = cantidad;
     }
 
-    @Override
-    public double calcularTotal() {
-        if (golosina instanceof PorPaquete && cantidad % 2 == 0){
-            ((PorPaquete) golosina).setPromocion(true);
-        } else {
-            ((PorPaquete) golosina).setPromocion(false);
-        }
-        return ((PorPaquete) golosina).calcularTotal();
-    }
 }
