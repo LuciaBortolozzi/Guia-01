@@ -11,13 +11,13 @@ public class Menu {
         do {
             Mostrar.mostrar("MENU");
 
-            Mostrar.mostrar("0. Ingresar por teclado, la información correspondiente a cada una de las facturas\n" +
+            Mostrar.mostrar("0. Ingresar por teclado los datos de los clientes, golosinas y depósitos con los que opera\n" +
+                    "la tienda.\n");
+
+            Mostrar.mostrar("1. Ingresar por teclado, la información correspondiente a cada una de las facturas\n" +
                     "generadas. Mostrar por pantalla cada factura registrada, incluyendo todos sus datos,\n" +
                     "el nombre de la tienda, datos de las golosinas, precios, subtotales, IVA y totales con 3\n" +
                     "valores decimales.\n");
-
-            Mostrar.mostrar("1. Ingresar por teclado los datos de los clientes, golosinas y depósitos con los que opera\n" +
-                    "la tienda.\n");
 
             Mostrar.mostrar("2. A partir de un número de factura ingresado por teclado, registrar el pago de la misma\n" +
                     "o bien, modificar el existente.\n");
@@ -51,12 +51,13 @@ public class Menu {
 
             switch (opcion){
                 case 0:
-                    controlador.ingresarFacturas();
-                    controlador.mostrarFacturas();
+                    controlador.ingresarClientes();
+                    controlador.ingresarDepositos();
+                    controlador.ingresarGolosinas();
                     break;
                 case 1:
-                    controlador.ingresarClientes();
-                    controlador.ingresarGolosinas();
+                    controlador.ingresarFacturas();
+                    controlador.mostrarFacturas();
                     break;
                 case 2:
                     break;

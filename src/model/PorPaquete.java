@@ -2,17 +2,17 @@ package model;
 
 public class PorPaquete extends Golosinas{
     private boolean promocion;
-    private Depositos[] deposito;
+    private Depositos[] depositos;
 
-    public PorPaquete(int codigo, String descripcion, String[] sabores, double precioUnitario, boolean promocion, Depositos[] deposito) {
+    public PorPaquete(int codigo, String descripcion, String[] sabores, double precioUnitario, boolean promocion, Depositos[] depositos) {
         super(codigo, descripcion, sabores, precioUnitario);
         this.promocion = promocion;
-        this.deposito = deposito;
+        this.depositos = depositos;
     }
 
-    public PorPaquete(boolean promocion, Depositos[] deposito) {
+    public PorPaquete(boolean promocion, Depositos[] depositos) {
         this.promocion = promocion;
-        this.deposito = deposito;
+        this.depositos = depositos;
     }
 
     public PorPaquete() {
@@ -26,12 +26,12 @@ public class PorPaquete extends Golosinas{
         this.promocion = promocion;
     }
 
-    public Depositos[] getDeposito() {
-        return deposito;
+    public Depositos[] getDepositos() {
+        return depositos;
     }
 
-    public void setDeposito(Depositos[] deposito) {
-        this.deposito = deposito;
+    public void setDepositos(Depositos[] depositos) {
+        this.depositos = depositos;
     }
 
 }
