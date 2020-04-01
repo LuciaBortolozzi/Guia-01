@@ -73,9 +73,7 @@ public class Controlador {
             facturas[i].setFechaEmision(actual);
 
             Calendar venc = Calendar.getInstance();
-            venc.add(Calendar.DATE,30);
-
-            facturas[i].setFechaVencimiento(venc);
+            facturas[i].setFechaVencimiento(Validaciones.validarVencimiento(venc));
 
             Mostrar.mostrar("Ingresar centro emisor: ");
             facturas[i].setCentroEmisor(Validaciones.validarInt());
@@ -119,31 +117,36 @@ public class Controlador {
             Mostrar.mostrar("¿Desea ingresar pago de la factura? (1) si o (0) no: ");
 
             if (Validaciones.validarBoolean()){
-                Mostrar.mostrar("Numero de Recibo: " + ( i + 1));
-                Mostrar.mostrar("Ingresar numero de transaccion: ");
-                int nTr = Validaciones.validarInt();
-
-                Mostrar.mostrar("Ingresar forma de pago: ");
-                Mostrar.mostrar("1. Tarjeta de debito\n" +
-                                        "2. Tarjeta de credito\n" +
-                                        "3. Trasferencia bancaria\n");
-                int eleccion = Validaciones.limite(1,3);
-                char formaDePago;
-                switch (eleccion){
-                    case 1:
-                        formaDePago = TARJETA_DEBITO;
-                        break;
-                    case 2:
-                        formaDePago = TARJETA_CREDITO;
-                        break;
-                    default:
-                        formaDePago = TRANSFERENCIA;
-                        break;
-                }
-
-                facturas[i].setPago(actual,formaDePago,i,nTr);
+                ingresarPago(i, actual);
             }
         }
+    }
+
+    public void ingresarPago(int i, Calendar actual) {
+        Mostrar.mostrar("Ingresar numero de recibo: ");
+        int rec = Validaciones.validarInt();
+        Mostrar.mostrar("Ingresar numero de transaccion: ");
+        int nTr = Validaciones.validarInt();
+
+        Mostrar.mostrar("Ingresar forma de pago: ");
+        Mostrar.mostrar("1. Tarjeta de debito\n" +
+                                "2. Tarjeta de credito\n" +
+                                "3. Trasferencia bancaria\n");
+        int eleccion = Validaciones.limite(1,3);
+        char formaDePago;
+        switch (eleccion){
+            case 1:
+                formaDePago = TARJETA_DEBITO;
+                break;
+            case 2:
+                formaDePago = TARJETA_CREDITO;
+                break;
+            default:
+                formaDePago = TRANSFERENCIA;
+                break;
+        }
+
+        facturas[i].setPago(actual,formaDePago,rec,nTr);
     }
 
     public void mostrarFacturas() {
@@ -267,7 +270,8 @@ public class Controlador {
 
                 for (int j = 0; j < depositos.length; j++) {
                     Mostrar.mostrar("Deposito"+ j +": "
-                            + depositos[j].getNombre() + "\t\t"
+                            + depositos[j].getNombre() + "\n"
+                            + depositos[j].getDomicilio() + "\n"
                             + (depositos[j].isPropio() ?  "si" : "no") );
                 }
 
@@ -351,29 +355,7 @@ public class Controlador {
         } else {
             Mostrar.mostrar("Modificar pago: ");
         }
-
-        Mostrar.mostrar("Numero de Recibo: " + ( pos + 1));
-        Mostrar.mostrar("Ingresar numero de transaccion: ");
-        int nTr = Validaciones.validarInt();
-
-        Mostrar.mostrar("Ingresar forma de pago: ");
-        Mostrar.mostrar("1. Tarjeta de debito\n" +
-                                "2. Tarjeta de credito\n" +
-                                "3. Trasferencia bancaria\n");
-        int eleccion = Validaciones.limite(1,3);
-        char formaDePago;
-        switch (eleccion){
-            case 1:
-                formaDePago = TARJETA_DEBITO;
-                break;
-            case 2:
-                formaDePago = TARJETA_CREDITO;
-                break;
-            default:
-                formaDePago = TRANSFERENCIA;
-                break;
-        }
-        facturas[pos].setPago(actual,formaDePago,pos,nTr);
+        ingresarPago(pos, actual);
     }
 
     public void ultimosDosMeses(){
@@ -381,6 +363,13 @@ public class Controlador {
 //        fecha de emisión y de vencimiento de aquellas emitidas durante los dos últimos meses.
 //        Incluir la descripción, cantidad, precio de las golosinas vendidas y si tiene alguna promoción o descuento aplicado.
 
+        Calendar actual = Calendar.getInstance();
+        for (Facturas fact : facturas
+        ) {
+            if (true){
+
+            }
+        }
 
 
 
@@ -421,15 +410,7 @@ public class Controlador {
 //        Mediante el uso de datos miembros de tipo estático incluido en una clase del modelo,
 //        mostrar la cantidad de facturas B generadas.
 
-        int cant = 0;
-        for (Facturas fact : facturas
-        ){
-            if (fact instanceof FacturaB){
-                cant++;
-                break;
-            }
-        }
-        Mostrar.mostrar("La cantidad de facturas B generadas es de: " + cant);
+        Mostrar.mostrar("La cantidad de facturas B generadas es de: " + FacturaB.getContador());
 
     }
 
@@ -438,8 +419,40 @@ public class Controlador {
 //        la cantidad de facturas B emitidas y el total de IVA a informar a la AFIP (total de IVA facturado).
 
         Calendar actual = Calendar.getInstance();
-        for (int i = 0; i < actual.get(Calendar.MONTH); i++){
+        int cantA;
+        int cantB;
+        double ivaA;
+        double ivaB;
+        double subtotal;
 
+        for (int i = 0; i < actual.get(Calendar.MONTH); i++){
+            cantA = 0;
+            cantB = 0;
+            subtotal = 0;
+            ivaA = 0;
+            ivaB = 0;
+
+            Mostrar.mostrar("Periodo: " + (i + 1));
+            Mostrar.mostrar("Mes: " + (i + 1) + "\tAnio" + actual.get(Calendar.YEAR));
+            for (Facturas fact : facturas
+            ) {
+                if (fact.getFechaEmision().get(Calendar.MONTH) == i){
+                    if (fact instanceof FacturaA){
+                        cantA++;
+                        ivaA += fact.calcularTotal()*ICalculable.IVA;
+                    } else {
+                        cantB++;
+                        subtotal += fact.calcularTotal() - fact.calcularTotal()*ICalculable.IVA;
+                        ivaB += subtotal*ICalculable.IVA;
+                    }
+                }
+            }
+            subtotal = ivaA + ivaB;
+            Mostrar.mostrar("Cantidad de facturas A: " + cantA);
+            Mostrar.mostrar("Total de IVA de facturas A: " + ivaA);
+            Mostrar.mostrar("Cantidad de facturas B: " + cantB);
+            Mostrar.mostrar("Total de IVA de facturas B: " + ivaB);
+            Mostrar.mostrar("Total de IVA facturado: " + (subtotal));
         }
     }
 
@@ -451,7 +464,7 @@ public class Controlador {
 
         for (Facturas fact : facturas
         ){
-            if ((fact.getFechaEmision().get(Calendar.YEAR) == actual.get(Calendar.YEAR)) && fact instanceof FacturaB){
+            if ((fact instanceof FacturaB) && (fact.getFechaEmision().get(Calendar.YEAR) == actual.get(Calendar.YEAR)) ){
                 for (ItemsDeFactura item: fact.getItemsDeFactura()
                      ) {
                     if (item.getGolosina() instanceof PorPaquete){
@@ -460,6 +473,7 @@ public class Controlador {
                 }
             }
         }
+        Mostrar.mostrar("Cantidad de golosinas en paquete no vendidas durante el año a clientes responsables inscriptos: " + cant);
     }
 
     public void golosinasDosLetras(){

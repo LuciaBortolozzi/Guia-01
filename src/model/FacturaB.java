@@ -3,12 +3,23 @@ package model;
 import java.util.Calendar;
 
 public class FacturaB extends Facturas {
+    private static int contadorB = 0;
 
-    public FacturaB(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente, String nombreTienda) {
+    public FacturaB(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente) {
         super(fechaEmision, fechaVencimiento, centroEmisor, numFactura, cliente);
+        contadorB++;
     }
 
     public FacturaB() {
+        contadorB++;
+    }
+
+    public static int getContador() {
+        return contadorB;
+    }
+
+    public static void setContador(int contadorB) {
+        FacturaB.contadorB = contadorB;
     }
 
     @Override
@@ -34,4 +45,6 @@ public class FacturaB extends Facturas {
         }
         return total;
     }
+
+
 }

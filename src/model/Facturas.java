@@ -18,7 +18,7 @@ public abstract class Facturas implements ICalculable{
     public Facturas(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente) {
         this.fechaEmision = fechaEmision;
         this.fechaVencimiento = fechaVencimiento;
-        this.centroEmisor = centroEmisor;
+        Facturas.centroEmisor = centroEmisor;
         this.numFactura = numFactura;
         this.cliente = cliente;
         this.pago = new Pagos();
@@ -57,7 +57,7 @@ public abstract class Facturas implements ICalculable{
     }
 
     public void setCentroEmisor(int centroEmisor) {
-        this.centroEmisor = centroEmisor;
+        Facturas.centroEmisor = centroEmisor;
     }
 
     public long getNumFactura() {
@@ -88,7 +88,6 @@ public abstract class Facturas implements ICalculable{
     public String getNombreTienda() {
         return nombreTienda;
     }
-
 
     public Pagos getPago() {
         return pago;

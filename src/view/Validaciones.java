@@ -58,6 +58,16 @@ public class Validaciones {
         return x == 1;
     }
 
+    public static Calendar dosMesesMas(Calendar fechaActual) {
+        fechaActual.add(Calendar.MONTH, 2);
+        return fechaActual;
+    }
+
+    public static Calendar validarVencimiento(Calendar fechaActual) {
+        fechaActual.add(Calendar.DATE,30);
+        return fechaActual;
+    }
+
     public static int validarAnio() {
         int x;
         do {
