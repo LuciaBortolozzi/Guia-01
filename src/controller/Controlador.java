@@ -164,10 +164,10 @@ public class Controlador {
 
             Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
                     + "Fecha de emision: " + fact.getFechaEmision().get(Calendar.DAY_OF_MONTH) + "/" +
-                                            fact.getFechaEmision().get((Calendar.MONTH) + 1) + "/" +
+                                            (fact.getFechaEmision().get((Calendar.MONTH)) + 1) + "/" +
                                             fact.getFechaEmision().get(Calendar.YEAR) + "\n"
                     + "Fecha de vencimiento: " + fact.getFechaVencimiento().get(Calendar.DAY_OF_MONTH) + "/" +
-                                                fact.getFechaVencimiento().get((Calendar.MONTH) + 1) + "/" +
+                                                (fact.getFechaVencimiento().get((Calendar.MONTH)) + 1) + "/" +
                                                 fact.getFechaVencimiento().get(Calendar.YEAR) + "\n"
                     + "Centro Emisor: " + fact.getCentroEmisor());
 
@@ -199,8 +199,9 @@ public class Controlador {
             }
 
             if (fact.getPago() != null){
-                Mostrar.mostrar("Fecha del dia: " + fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +
-                        fact.getPago().getFechaDelDia().get((Calendar.MONTH) + 1) + "/" +
+                Mostrar.mostrar("Fecha del dia: " +
+                        fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +
+                        (fact.getPago().getFechaDelDia().get((Calendar.MONTH)) + 1) + "/" +
                         fact.getPago().getFechaDelDia().get(Calendar.YEAR) + "\n"
                         + "Forma de pago: "
                         + (fact.getPago().getFormaDePago() == TARJETA_DEBITO ? "Tarjeta de debito":
@@ -284,7 +285,7 @@ public class Controlador {
                 }
 
                 //Busqueda de depositos para agregar
-                String nombre = "";
+                String nombre;
                 int pos = -1;
                 int k = 0;
                 do {
@@ -363,15 +364,60 @@ public class Controlador {
 //        fecha de emisión y de vencimiento de aquellas emitidas durante los dos últimos meses.
 //        Incluir la descripción, cantidad, precio de las golosinas vendidas y si tiene alguna promoción o descuento aplicado.
 
+        //Fecha de hoy (para elegir fechas de vencimientos mayores)
         Calendar actual = Calendar.getInstance();
-        for (Facturas fact : facturas
-        ) {
-            if (true){
 
+        // Fecha de hoy dos meses despues (para elegir fechas de vencimientos menores)
+        Calendar postDosMeses = Calendar.getInstance();
+        postDosMeses = Validaciones.dosMesesMas(actual);
+
+        int anterior;                               //  postDosMeses.compareTo(vencimiento);
+        int posterior;                              //  actual.compareTo(vencimiento);
+
+        for (Clientes client: clientes
+             ) {
+            Mostrar.mostrar("CUIT del cliente: " + client.getCuit() + "\n"
+                    + "Razon Social del cliente: " + client.getRazonSocial() + "\n"
+                    + "Responsable inscripto: " + (client.isCondicionIVA() ?  "si" : "no"));
+
+            for (Facturas fact: facturas
+                 ) {
+                    anterior = postDosMeses.compareTo(fact.getFechaVencimiento());      // si es igual da 0 o anterior da 1
+                    posterior = actual.compareTo(fact.getFechaVencimiento());            // si es igual da 0 o posterior da -1
+
+                if (fact.getCliente() == client && anterior >= 0 && posterior <= 0){
+                    /*es el mismo cliente y la fecha de vencimiento esta entre la actual y en dos meses (actual < vencimiento < actual + 2meses)
+                    * ACLARACION: es imposible que anterior Y posterior sean simultaneamente 0 ya que
+                    * la fecha de vencimiento es siempre la misma y (la actual y postDosMeses son diferentes)*/
+
+                    if (fact instanceof FacturaA){
+                        Mostrar.mostrar("Factura A");
+                    } else {
+                        Mostrar.mostrar("Factura B");
+                    }
+
+                    Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
+                            + "Fecha de emision: " + fact.getFechaEmision().get(Calendar.DAY_OF_MONTH) + "/" +
+                            (fact.getFechaEmision().get((Calendar.MONTH)) + 1) + "/" +
+                            fact.getFechaEmision().get(Calendar.YEAR) + "\n"
+                            + "Fecha de vencimiento: " + fact.getFechaVencimiento().get(Calendar.DAY_OF_MONTH) + "/" +
+                            (fact.getFechaVencimiento().get((Calendar.MONTH)) + 1) + "/" +
+                            fact.getFechaVencimiento().get(Calendar.YEAR));
+
+                    for (ItemsDeFactura item: fact.getItemsDeFactura()
+                    ) {
+                        Mostrar.mostrar("Descripcion de golosina: " + item.getGolosina().getDescripcion() + "\n");
+                        Mostrar.mostrar("Precio unitario: " + item.getGolosina().getPrecioUnitario());
+                        Mostrar.mostrar("Cantidad de golosina: " + item.getCantidad());
+                        if (item.getGolosina() instanceof PorPaquete && ((PorPaquete) item.getGolosina()).isPromocion()){
+                            Mostrar.mostrar("Tiene promocion");
+                        } else if (item.getGolosina() instanceof PorKilo && ((PorKilo) item.getGolosina()).isOferta()){
+                            Mostrar.mostrar("Esta en oferta");
+                        }
+                    }
+                }
             }
         }
-
-
 
 
     }
@@ -384,7 +430,7 @@ public class Controlador {
         Calendar actual = Calendar.getInstance();
         double importe = Double.parseDouble(args);
 
-        for (int i = facturas.length; i >= 0; i--) {
+        for (int i = facturas.length - 1; i >= 0; i--) {
             double total;
 
             if (facturas[i] instanceof FacturaA){
@@ -461,19 +507,36 @@ public class Controlador {
 
         Calendar actual = Calendar.getInstance();
         int cant = 0;
+        boolean fueVendida = false;
 
-        for (Facturas fact : facturas
-        ){
-            if ((fact instanceof FacturaB) && (fact.getFechaEmision().get(Calendar.YEAR) == actual.get(Calendar.YEAR)) ){
-                for (ItemsDeFactura item: fact.getItemsDeFactura()
-                     ) {
-                    if (item.getGolosina() instanceof PorPaquete){
-                        cant++;
+        for (Golosinas gols: golosinas
+             ) {
+            if (gols instanceof PorPaquete){
+                for (Facturas fact : facturas
+                ){
+                    if ((fact instanceof FacturaA) && (fact.getFechaEmision().get(Calendar.YEAR) == actual.get(Calendar.YEAR)) ){
+                        for (ItemsDeFactura item: fact.getItemsDeFactura()
+                        ) {
+                            if (item.getGolosina() == gols){
+                                fueVendida = true;              //  si la encontro en el item, fue vendida
+                                break;                          //  salgo de los items
+                            } else {
+                                fueVendida = false;
+                            }
+                        }
+                    }
+                    if (fueVendida){                            //  si fue vendida, salir de facturas
+                        break;
                     }
                 }
             }
+
+            if(!fueVendida) {                           //  si no fue vendida en ninguna factura la cuento
+                cant++;
+            }
         }
-        Mostrar.mostrar("Cantidad de golosinas en paquete no vendidas durante el año a clientes responsables inscriptos: " + cant);
+
+        Mostrar.mostrar("Cantidad de golosinas en paquete que no fueron vendidas en el año a responsables inscriptos: " + cant);
     }
 
     public void golosinasDosLetras(){
@@ -501,8 +564,9 @@ public class Controlador {
             if (encontrado){
                 Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura());
                 if (fact.getPago() != null){
-                    Mostrar.mostrar("Fecha del pago: " + fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +
-                            fact.getPago().getFechaDelDia().get((Calendar.MONTH) + 1) + "/" +
+                    Mostrar.mostrar("Fecha del pago: " +
+                            fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +
+                            (fact.getPago().getFechaDelDia().get((Calendar.MONTH)) + 1) + "/" +
                             fact.getPago().getFechaDelDia().get(Calendar.YEAR));
                 }
             }

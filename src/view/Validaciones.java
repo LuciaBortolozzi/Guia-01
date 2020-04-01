@@ -68,7 +68,7 @@ public class Validaciones {
         return fechaActual;
     }
 
-    public static int validarAnio() {
+/*    public static int validarAnio() {
         int x;
         do {
             while (!scan.hasNextInt()){
@@ -114,7 +114,7 @@ public class Validaciones {
             x = scan.nextInt();
         } while (x != 1 && x != 2);
         return x == 1;
-    }
+    }*/
 
     public static int tipo(){
         int x;
@@ -149,7 +149,7 @@ public class Validaciones {
         return texto;
     }
 
-    public static String ingresar(String ingreso, boolean toUpper) {
+    /*public static String ingresar(String ingreso, boolean toUpper) {
         Mostrar.mostrar("Ingresar " + ingreso);
         String texto = "";
         while (texto.equals("")) {
@@ -160,5 +160,5 @@ public class Validaciones {
         } else {
             return texto;
         }
-    }
+    }*/
 }
