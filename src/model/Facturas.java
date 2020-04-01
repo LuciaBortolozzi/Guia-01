@@ -100,6 +100,4 @@ public abstract class Facturas implements ICalculable{
         pago.setNumRecibo(numRecibo);
         pago.setNumTransaccion(numTransaccion);
     }
-
-
 }

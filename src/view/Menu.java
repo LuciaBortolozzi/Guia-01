@@ -60,18 +60,25 @@ public class Menu {
                     controlador.mostrarFacturas();
                     break;
                 case 2:
+                    controlador.registrarPago();
                     break;
                 case 3:
+                    controlador.ultimosDosMeses();
                     break;
                 case 4:
+                    controlador.factVencImpagas(args);
                     break;
                 case 5:
+                    controlador.facturasBGeneradas();
                     break;
                 case 6:
+                    controlador.informeIVA();
                     break;
                 case 7:
+                    controlador.noVendidasARespIns();
                     break;
                 case 8:
+                    controlador.golosinasDosLetras();
                     break;
                 case 9:
                     System.exit(0);
