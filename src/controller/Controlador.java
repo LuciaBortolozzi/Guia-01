@@ -7,11 +7,11 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class Controlador {
-    private static final int F = 1;
-    private static final int G = 1;
-    private static final int C = 1;
-    private static final int D = 1;
-    private static final int I = 1;
+    private static final int F = 2;
+    private static final int G = 2;
+    private static final int C = 3;
+    private static final int D = 5;
+    private static final int I = 2;
     private static final char TARJETA_DEBITO = 'D';
     private static final char TARJETA_CREDITO = 'C';
     private static final char TRANSFERENCIA = 'T';
@@ -40,7 +40,7 @@ public class Controlador {
             Mostrar.mostrar("Agregar el cliente correspondiente: ");
             Mostrar.mostrar("Cliente\t\tCUIT\t\tRazon Social\t\tResponsable Inscripto");
             for (int j = 0; j < clientes.length; j++) {
-                Mostrar.mostrar("Cliente"+ j +":\t\t"
+                Mostrar.mostrar("Cliente "+ (j+1) +":\t\t"
                         + clientes[j].getCuit() + "\t\t"
                         + clientes[j].getRazonSocial() + "\t\t"
                         + (clientes[j].isCondicionIVA() ?  "si" : "no") );
@@ -287,10 +287,10 @@ public class Controlador {
                 ((PorPaquete) golosinas[i]).setPromocion(Validaciones.validarBoolean());
 
                 for (int j = 0; j < depositos.length; j++) {
-                    Mostrar.mostrar("Deposito"+ j +": "
-                            + depositos[j].getNombre() + "\n"
-                            + depositos[j].getDomicilio() + "\n"
-                            + (depositos[j].isPropio() ?  "si" : "no") );
+                    Mostrar.mostrar("Deposito "+ (j + 1) +": "
+                            + "Nombre " + depositos[j].getNombre() + "\n"
+                            + "Domicilio " + depositos[j].getDomicilio() + "\n"
+                            + "Propio " + (depositos[j].isPropio() ?  "si" : "no") );
                 }
 
                 // Array de depositos auxiliar
