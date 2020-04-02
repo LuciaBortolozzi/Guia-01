@@ -29,9 +29,13 @@ public class Controlador {
 //        Ingresar por teclado, la información correspondiente a cada una de las facturas generadas.
 
         Mostrar.mostrar("Ingreso de facturas");
+
+        Mostrar.mostrar("Ingresar centro emisor: ");
+        Facturas.setCentroEmisor(Validaciones.validarInt());
+
         for(int i = 0; i < F; i++) {
 
-            //Primero agrego el cliente para saber si se trata de factura A o B
+            //Primero agrego el cliente para saber si se trata de factura A o B (porque prefiero usar contructor vacio + sets que contructor completo)
 
             Mostrar.mostrar("Agregar el cliente correspondiente: ");
             Mostrar.mostrar("\t\t\t\t\t\t\t\tCliente\t\tCUIT\t\tRazon Social\t\tResponsable Inscripto");
@@ -54,9 +58,10 @@ public class Controlador {
                     }
                 }
                 if (pos == -1){
-                    System.out.println("No se encontro el cliente.");
+                    Mostrar.mostrar("No se encontro el cliente.");
                 }
             } while(pos == -1);
+
 
             if (facturas[i].getCliente().isCondicionIVA()){
                 facturas[i] = new FacturaA();
@@ -69,14 +74,21 @@ public class Controlador {
             Mostrar.mostrar("Factura: " + (i + 1));
             facturas[i].setNumFactura(i);
 
-            Calendar actual = Calendar.getInstance();
-            facturas[i].setFechaEmision(actual);
+            Calendar emision = Calendar.getInstance();
+
+            Mostrar.mostrar("Ingresar año de emision: ");
+            emision.set(Calendar.YEAR,Validaciones.validarAnio());
+
+            Mostrar.mostrar("Ingresar mes de emision: ");
+            emision.set(Calendar.MONTH,Validaciones.validarMes() - 1);
+
+            Mostrar.mostrar("Ingresar dia de emision: ");
+            emision.set(Calendar.DAY_OF_MONTH,Validaciones.validarDia());
+            
+            facturas[i].setFechaEmision(emision);
 
             Calendar venc = Calendar.getInstance();
             facturas[i].setFechaVencimiento(Validaciones.validarVencimiento(venc));
-
-            Mostrar.mostrar("Ingresar centro emisor: ");
-            facturas[i].setCentroEmisor(Validaciones.validarInt());
 
             Mostrar.mostrar("Ingresar items de la factura: ");
 
@@ -104,7 +116,7 @@ public class Controlador {
                         }
                     }
                     if (pos == -1){
-                        System.out.println("No se encontro la golosina.");
+                        Mostrar.mostrar("No se encontro la golosina.");
                     }
                 } while(pos == -1);
 
@@ -117,12 +129,14 @@ public class Controlador {
             Mostrar.mostrar("¿Desea ingresar pago de la factura? (1) si o (0) no: ");
 
             if (Validaciones.validarBoolean()){
-                ingresarPago(i, actual);
+                ingresarPago(i);
             }
         }
     }
 
-    public void ingresarPago(int i, Calendar actual) {
+    public void ingresarPago(int i) {
+        Calendar actual = Calendar.getInstance();
+
         Mostrar.mostrar("Ingresar numero de recibo: ");
         int rec = Validaciones.validarInt();
         Mostrar.mostrar("Ingresar numero de transaccion: ");
@@ -152,24 +166,20 @@ public class Controlador {
     public void mostrarFacturas() {
 //        Mostrar por pantalla cada factura registrada, incluyendo todos sus datos, el nombre de la tienda, datos de las golosinas, precios, subtotales, IVA y totales con 3 valores decimales
 
-        Mostrar.mostrar("Nombre de Tienda: " + facturas[0].getNombreTienda());    // Es siempre el mismo
+        Mostrar.mostrar("Nombre de Tienda: " + Facturas.getNombreTienda());    // Es siempre el mismo
+        Mostrar.mostrar("Centro Emisor: " + Facturas.getCentroEmisor());   // Es siempre el mismo
         for (Facturas fact: facturas
              ) {
 
-            if (fact instanceof FacturaA){
-                Mostrar.mostrar("Factura A");
-            } else {
-                Mostrar.mostrar("Factura B");
-            }
+            Mostrar.mostrar(fact instanceof FacturaA ? "Factura A" : "Factura B");
 
-            Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
+            Mostrar.mostrar("Factura: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
                     + "Fecha de emision: " + fact.getFechaEmision().get(Calendar.DAY_OF_MONTH) + "/" +
                                             (fact.getFechaEmision().get((Calendar.MONTH)) + 1) + "/" +
                                             fact.getFechaEmision().get(Calendar.YEAR) + "\n"
                     + "Fecha de vencimiento: " + fact.getFechaVencimiento().get(Calendar.DAY_OF_MONTH) + "/" +
                                                 (fact.getFechaVencimiento().get((Calendar.MONTH)) + 1) + "/" +
-                                                fact.getFechaVencimiento().get(Calendar.YEAR) + "\n"
-                    + "Centro Emisor: " + fact.getCentroEmisor());
+                                                fact.getFechaVencimiento().get(Calendar.YEAR));
 
             Mostrar.mostrar("CUIT del cliente: " + fact.getCliente().getCuit() + "\n"
                     + "Razon Social del cliente: " + fact.getCliente().getRazonSocial() + "\n"
@@ -301,7 +311,7 @@ public class Controlador {
                         }
                     }
                     if (pos == -1){
-                        System.out.println("No se encontro ningun deposito.");
+                        Mostrar.mostrar("No se encontro ningun deposito.");
                     }
                 } while(pos == -1);
                 ((PorPaquete) golosinas[i]).setDepositos(aux);
@@ -333,7 +343,6 @@ public class Controlador {
     public void registrarPago(){
 //        A partir de un número de factura ingresado por teclado, registrar el pago de la misma o bien, modificar el existente.
 
-        Calendar actual = Calendar.getInstance();
         Mostrar.mostrar("Ingrese la factura, a la cual desea registrar/modificar pago: ");
 
         int pos = -1;
@@ -347,7 +356,7 @@ public class Controlador {
                 }
             }
             if (pos == -1){
-                System.out.println("No se encontro la factura.");
+                Mostrar.mostrar("No se encontro la factura.");
             }
         } while(pos == -1);
 
@@ -356,7 +365,7 @@ public class Controlador {
         } else {
             Mostrar.mostrar("Modificar pago: ");
         }
-        ingresarPago(pos, actual);
+        ingresarPago(pos);
     }
 
     public void ultimosDosMeses(){
@@ -369,7 +378,7 @@ public class Controlador {
 
         // Fecha de hoy dos meses despues (para elegir fechas de vencimientos menores)
         Calendar postDosMeses = Calendar.getInstance();
-        postDosMeses = Validaciones.dosMesesMas(actual);
+        postDosMeses = Validaciones.dosMesesDespues(actual);
 
         int anterior;                               //  postDosMeses.compareTo(vencimiento);
         int posterior;                              //  actual.compareTo(vencimiento);
@@ -396,7 +405,7 @@ public class Controlador {
                         Mostrar.mostrar("Factura B");
                     }
 
-                    Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
+                    Mostrar.mostrar("Factura: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
                             + "Fecha de emision: " + fact.getFechaEmision().get(Calendar.DAY_OF_MONTH) + "/" +
                             (fact.getFechaEmision().get((Calendar.MONTH)) + 1) + "/" +
                             fact.getFechaEmision().get(Calendar.YEAR) + "\n"
@@ -444,7 +453,7 @@ public class Controlador {
                 for (ItemsDeFactura item: facturas[i].getItemsDeFactura()
                      ) {
                     if (item.getGolosina() instanceof PorKilo && (total > importe)){
-                        Mostrar.mostrar("Numero de factura vencida impaga: " + "000" + facturas[i].getCentroEmisor() + "-" + "0000000" + facturas[i].getNumFactura());
+                        Mostrar.mostrar("Numero de factura vencida impaga: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + facturas[i].getNumFactura());
                     }
                 }
             }
@@ -517,7 +526,7 @@ public class Controlador {
                     if ((fact instanceof FacturaA) && (fact.getFechaEmision().get(Calendar.YEAR) == actual.get(Calendar.YEAR)) ){
                         for (ItemsDeFactura item: fact.getItemsDeFactura()
                         ) {
-                            if (item.getGolosina() == gols){
+                            if (item.getGolosina().getCodigo() == gols.getCodigo()){
                                 fueVendida = true;              //  si la encontro en el item, fue vendida
                                 break;                          //  salgo de los items
                             } else {
@@ -562,7 +571,7 @@ public class Controlador {
                 }
             }
             if (encontrado){
-                Mostrar.mostrar("Factura: " + "000" + fact.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura());
+                Mostrar.mostrar("Factura: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura());
                 if (fact.getPago() != null){
                     Mostrar.mostrar("Fecha del pago: " +
                             fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +

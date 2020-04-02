@@ -5,8 +5,8 @@ import java.util.Calendar;
 public class FacturaB extends Facturas {
     private static int contadorB = 0;
 
-    public FacturaB(Calendar fechaEmision, Calendar fechaVencimiento, int centroEmisor, long numFactura, Clientes cliente) {
-        super(fechaEmision, fechaVencimiento, centroEmisor, numFactura, cliente);
+    public FacturaB(Calendar fechaEmision, Calendar fechaVencimiento, long numFactura, Clientes cliente) {
+        super(fechaEmision, fechaVencimiento, numFactura, cliente);
         contadorB++;
     }
 

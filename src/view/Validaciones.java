@@ -58,7 +58,7 @@ public class Validaciones {
         return x == 1;
     }
 
-    public static Calendar dosMesesMas(Calendar fechaActual) {
+    public static Calendar dosMesesDespues(Calendar fechaActual) {
         fechaActual.add(Calendar.MONTH, 2);
         return fechaActual;
     }
@@ -68,7 +68,7 @@ public class Validaciones {
         return fechaActual;
     }
 
-/*    public static int validarAnio() {
+    public static int validarAnio() {
         int x;
         do {
             while (!scan.hasNextInt()){
@@ -104,7 +104,7 @@ public class Validaciones {
         return x;
     }
 
-    public static boolean decision(){
+/*    public static boolean decision(){
         int x;
         do {
             while (!scan.hasNextInt()) {
