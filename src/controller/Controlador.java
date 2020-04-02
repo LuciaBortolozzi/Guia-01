@@ -7,11 +7,11 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class Controlador {
-    private static final int F = 2;
-    private static final int G = 2;
-    private static final int C = 3;
-    private static final int D = 5;
-    private static final int I = 2;
+    private static final int F = 1;
+    private static final int G = 1;
+    private static final int C = 1;
+    private static final int D = 1;
+    private static final int I = 1;
     private static final char TARJETA_DEBITO = 'D';
     private static final char TARJETA_CREDITO = 'C';
     private static final char TRANSFERENCIA = 'T';
@@ -38,9 +38,9 @@ public class Controlador {
             //Primero agrego el cliente para saber si se trata de factura A o B (porque prefiero usar contructor vacio + sets que contructor completo)
 
             Mostrar.mostrar("Agregar el cliente correspondiente: ");
-            Mostrar.mostrar("\t\t\t\t\t\t\t\tCliente\t\tCUIT\t\tRazon Social\t\tResponsable Inscripto");
+            Mostrar.mostrar("Cliente\t\tCUIT\t\tRazon Social\t\tResponsable Inscripto");
             for (int j = 0; j < clientes.length; j++) {
-                Mostrar.mostrar("Cliente"+ j +": "
+                Mostrar.mostrar("Cliente"+ j +":\t\t"
                         + clientes[j].getCuit() + "\t\t"
                         + clientes[j].getRazonSocial() + "\t\t"
                         + (clientes[j].isCondicionIVA() ?  "si" : "no") );
@@ -63,7 +63,7 @@ public class Controlador {
             } while(pos == -1);
 
 
-            if (facturas[i].getCliente().isCondicionIVA()){
+            if (clientes[pos].isCondicionIVA()){
                 facturas[i] = new FacturaA();
             } else {
                 facturas[i] = new FacturaB();
@@ -96,9 +96,9 @@ public class Controlador {
                 Mostrar.mostrar("Item: " + ( j + 1));
 
                 //Agrego golosina
-                Mostrar.mostrar("\t\t\t\t\t\t\t\tGolosina\t\tCodigo\t\tDescripcion\t\tPrecio Unitario");
+                Mostrar.mostrar("Golosina\t\tCodigo\t\tDescripcion\t\tPrecio Unitario");
                 for (int k = 0; k < golosinas.length; k++) {
-                    Mostrar.mostrar("Golosina"+ k +": "
+                    Mostrar.mostrar("Golosina"+ k +":\t\t"
                             + golosinas[k].getCodigo() + "\t\t"
                             + golosinas[k].getDescripcion() + "\t\t"
                             + golosinas[k].getPrecioUnitario());
@@ -173,28 +173,33 @@ public class Controlador {
 
             Mostrar.mostrar(fact instanceof FacturaA ? "Factura A" : "Factura B");
 
-            Mostrar.mostrar("Factura: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + fact.getNumFactura() + "\n"
+            Mostrar.mostrar("Factura: " + "000" + Facturas.getCentroEmisor() + "-" + "0000000" + (fact.getNumFactura() + 1) + "\n"
                     + "Fecha de emision: " + fact.getFechaEmision().get(Calendar.DAY_OF_MONTH) + "/" +
                                             (fact.getFechaEmision().get((Calendar.MONTH)) + 1) + "/" +
                                             fact.getFechaEmision().get(Calendar.YEAR) + "\n"
                     + "Fecha de vencimiento: " + fact.getFechaVencimiento().get(Calendar.DAY_OF_MONTH) + "/" +
                                                 (fact.getFechaVencimiento().get((Calendar.MONTH)) + 1) + "/" +
-                                                fact.getFechaVencimiento().get(Calendar.YEAR));
+                                                fact.getFechaVencimiento().get(Calendar.YEAR) + "\n");
 
             Mostrar.mostrar("CUIT del cliente: " + fact.getCliente().getCuit() + "\n"
                     + "Razon Social del cliente: " + fact.getCliente().getRazonSocial() + "\n"
-                    + "Responsable inscripto: " + (fact.getCliente().isCondicionIVA() ?  "si" : "no"));
+                    + "Responsable inscripto: " + (fact.getCliente().isCondicionIVA() ?  "si" : "no") + "\n");
+
+            Mostrar.mostrar("Detalle");
+            Mostrar.mostrar("Codigo\t\tDescripcion\t\tCantidad\t\tPrecio unitario");
 
             for (ItemsDeFactura item: fact.getItemsDeFactura()
                  ) {
-                Mostrar.mostrar("Codigo de golosina: " + item.getGolosina().getCodigo() + "\n"
-                + "Descripcion de golosina: " + item.getGolosina().getDescripcion() + "\n");
+
+                Mostrar.mostrar(item.getGolosina().getCodigo() + "\t\t"
+                        + item.getGolosina().getDescripcion() + "\t\t"
+                        + item.getCantidad() + "\t\t"
+                        + item.getGolosina().getPrecioUnitario());
+
                 Mostrar.mostrar("Sabores de golosina: ");
                 for (int i = 0; i < item.getGolosina().getSabores().length; i++){
                     Mostrar.mostrar(item.getGolosina().getSabores()[i]);
                 }
-                Mostrar.mostrar("Precio unitario: " + item.getGolosina().getPrecioUnitario());
-                Mostrar.mostrar("Cantidad de golosina: " + item.getCantidad());
             }
             DecimalFormat formato = new DecimalFormat("#.##");
 
@@ -208,17 +213,19 @@ public class Controlador {
                 Mostrar.mostrar("Total: " + formato.format(fact.calcularTotal()));
             }
 
-            if (fact.getPago() != null){
+            try {
                 Mostrar.mostrar("Fecha del dia: " +
                         fact.getPago().getFechaDelDia().get(Calendar.DAY_OF_MONTH) + "/" +
                         (fact.getPago().getFechaDelDia().get((Calendar.MONTH)) + 1) + "/" +
                         fact.getPago().getFechaDelDia().get(Calendar.YEAR) + "\n"
                         + "Forma de pago: "
                         + (fact.getPago().getFormaDePago() == TARJETA_DEBITO ? "Tarjeta de debito":
-                                (fact.getPago().getFormaDePago() == TARJETA_CREDITO ? "Tarjeta de credito":
-                                        "Transferencia"))+ "\n"
+                        (fact.getPago().getFormaDePago() == TARJETA_CREDITO ? "Tarjeta de credito":
+                                "Transferencia"))+ "\n"
                         + "Numero de recibo: " + fact.getPago().getNumRecibo() + "\n"
                         + "Numero de transaccion: " + fact.getPago().getNumTransaccion());
+            } catch (Exception e){
+                Mostrar.mostrar("No tiene pago");
             }
         }
     }
@@ -266,8 +273,8 @@ public class Controlador {
             int cant = Validaciones.limite(1, 6);
             String[] sabores = new String[cant];
             for(int j = 0; j < cant; j++) {
-                Mostrar.mostrar("Ingresar sabores: \n0. acido \n1. agrio \n2. amargo \n3. dulce \n4. salado \n5. picante ");
-                int sabor = Validaciones.limite(0, 5);
+                Mostrar.mostrar("Ingresar sabores: \n1. acido \n2. agrio \n3. amargo \n4. dulce \n5. salado \n6. picante ");
+                int sabor = Validaciones.limite(1, 6);
                 sabores[j] = ICalculable.SABORES[sabor];
             }
             golosinas[i].setSabores(sabores);
@@ -288,7 +295,7 @@ public class Controlador {
 
                 // Array de depositos auxiliar
                 Mostrar.mostrar("Ingresar cantidad de depositos en donde se encuentra la golosina: ");
-                cant = Validaciones.limite(0, depositos.length);
+                cant = Validaciones.limite(1, depositos.length);
                 Depositos[] aux = new Depositos[cant];
                 for(int j = 0; j < aux.length; j++){
                     aux[j] = new Depositos();

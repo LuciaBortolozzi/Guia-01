@@ -25,7 +25,7 @@ public class Menu {
             Mostrar.mostrar("3. Para cada uno de los clientes, mostrar su CUIT y razón social, números de factura\n" +
                     "correspondientes, tipo (factura A o B), fecha de emisión y de vencimiento de aquellas\n" +
                     "emitidas durante los dos últimos meses. Incluir la descripción, cantidad, precio de las\n" +
-                    "golosinas vendidas y si tiene alguna promoción o descuento aplicado.");
+                    "golosinas vendidas y si tiene alguna promoción o descuento aplicado.\n");
 
             Mostrar.mostrar("4. Mostrar por pantalla los números de facturas vencidas impagas, ordenados en forma\n" +
                     "descendente cuyo importe total vendido supere el valor ingresado como argumento de\n" +
