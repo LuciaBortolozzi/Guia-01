@@ -1,5 +1,5 @@
 # Guia-01
-Programacion Avanzada TP 01
+Programacion Avanzada TP 01     
 
 La tienda y despensa “Todo dulce”, que comercializa tanto golosinas por kilo como en
 paquetes requiere el desarrollo una aplicación JAVA con OO para la registración y emisión
